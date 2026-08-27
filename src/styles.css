@@ -19,6 +19,13 @@
  */
 
 @theme inline {
+  --font-display: "Yeseva One", Georgia, serif;
+  --font-deva: "Tiro Devanagari Hindi", Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-brass: var(--brass);
+  --color-oxblood: var(--oxblood);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -140,5 +147,133 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+}
+
+/* ── Deluxe Dawakhana theme ──────────────────────────────────────────── */
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.16 0.03 160);
+  --foreground: oklch(0.95 0.02 85);
+  --card: oklch(0.21 0.035 165);
+  --card-foreground: oklch(0.95 0.02 85);
+  --popover: oklch(0.21 0.035 165);
+  --popover-foreground: oklch(0.95 0.02 85);
+  --primary: oklch(0.75 0.13 78);
+  --primary-foreground: oklch(0.19 0.03 160);
+  --secondary: oklch(0.27 0.05 168);
+  --secondary-foreground: oklch(0.95 0.02 85);
+  --muted: oklch(0.25 0.035 165);
+  --muted-foreground: oklch(0.74 0.03 90);
+  --accent: oklch(0.45 0.16 30);
+  --accent-foreground: oklch(0.96 0.02 85);
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: oklch(0.97 0.01 85);
+  --border: oklch(0.98 0.02 85 / 16%);
+  --input: oklch(0.98 0.02 85 / 22%);
+  --ring: oklch(0.75 0.13 78);
+  --brass: oklch(0.78 0.12 80);
+  --oxblood: oklch(0.38 0.15 25);
+  --cream: oklch(0.95 0.03 88);
+  --ink: oklch(0.18 0.03 160);
+}
+
+.dark {
+  --background: oklch(0.13 0.03 160);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+@utility font-deva {
+  font-family: var(--font-deva);
+}
+
+/* Rotating scene layers: long cross-dissolve + slow cinematic drift */
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  will-change: opacity;
+}
+.scene-layer[data-active="true"] {
+  opacity: 1;
+}
+.scene-layer[data-active="true"] .scene-image {
+  animation: kenburns 26s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1.5%, 0);
+  }
+}
+
+/* Film grain + scanlines */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+.scanlines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklab, black 55%, transparent) 0px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ticker-track {
+  animation: ticker 30s linear infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin-slow 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-layer[data-active="true"] .scene-image,
+  .ticker-track,
+  .spin-slow {
+    animation: none !important;
   }
 }
