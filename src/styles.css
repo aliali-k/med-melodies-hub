@@ -19,6 +19,13 @@
  */
 
 @theme inline {
+  --font-display: "Yeseva One", Georgia, serif;
+  --font-deva: "Tiro Devanagari Hindi", Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-brass: var(--brass);
+  --color-oxblood: var(--oxblood);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
